@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Eyüboğlu Koleji</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Segoe UI', Tahoma, sans-serif;
+  font-size: 13px;
+  background: #ECE9D8;
+  color: #000;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+body.dark {
+  background: #0a1628;
+  color: #d0dff0;
+}
+
+/* ─── HEADER ─── */
+.header {
+  background: linear-gradient(180deg, #245EDC 0%, #1a4ab0 60%, #1240a0 100%);
+  padding: 0;
+  display: flex;
+  align-items: stretch;
+  height: 56px;
+  border-bottom: 3px solid #F5A623;
+}
+
+body.dark .header {
+  background: linear-gradient(180deg, #0c1f3e 0%, #071020 100%);
+  border-bottom: 3px solid #F5A623;
+}
+
+.header-logo {
+  background: rgba(0,0,0,0.25);
+  padding: 6px 14px;
+  display: flex;
+  align-items: center;
+  border-right: 2px solid rgba(255,255,255,0.2);
+}
+
+.header-logo img { height: 40px; }
+
+.header-title {
+  padding: 0 14px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  flex: 1;
+}
+
+.header-title h1 {
+  font-family: 'Segoe UI', Tahoma, sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: #fff;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+  letter-spacing: 0.5px;
+}
+
+.header-title p {
+  font-size: 11px;
+  color: rgba(255,255,255,0.75);
+  margin-top: 1px;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  padding: 0 14px;
+  gap: 8px;
+  border-left: 1px solid rgba(255,255,255,0.15);
+}
+
+.toggle-label {
+  font-size: 11px;
+  color: rgba(255,255,255,0.8);
+  white-space: nowrap;
+}
+
+.toggle-btn {
+  width: 42px;
+  height: 20px;
+  background: #1a3a7a;
+  border: 2px inset #0a2060;
+  border-radius: 0;
+  position: relative;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+body.dark .toggle-btn { background: #F5A623; border-color: #c07810; }
+
+.toggle-knob {
+  width: 14px;
+  height: 14px;
+  background: #c0c0c0;
+  border-top: 2px solid #fff;
+  border-left: 2px solid #fff;
+  border-bottom: 2px solid #808080;
+  border-right: 2px solid #808080;
+  position: absolute;
+  left: 2px;
+  transition: left 0.1s;
+}
+
+body.dark .toggle-knob { left: 24px; background: #1a3a7a; }
+
+/* ─── WIN7 PROGRESS BAR ─── */
+.progressbar-wrap {
+  background: #245EDC;
+  padding: 8px 14px 10px;
+  border-bottom: 3px solid #F5A623;
+}
+
+body.dark .progressbar-wrap {
+  background: #071020;
+}
+
+.progressbar-label {
+  display: flex;
+  justify-content: space-between;
+  color: rgba(255,255,255,0.85);
+  font-size: 11px;
+  margin-bottom: 5px;
+}
+
+.win7-progress-outer {
+  height: 22px;
+  background: #d0d0d0;
+  border: 2px solid #888;
+  border-radius: 0;
+  overflow: hidden;
+  position: relative;
+}
+
+body.dark .win7-progress-outer {
+  background: #0a1628;
+  border-color: #F5A623;
+}
+
+.win7-progress-inner {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(
+    180deg,
+    #76d176 0%,
+    #3cb83c 45%,
+    #2ea82e 50%,
+    #55c855 55%,
+    #8de58d 100%
+  );
+  position: relative;
+  transition: width 0.15s linear;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.win7-progress-inner::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 50%;
+  background: rgba(255,255,255,0.35);
+}
+
+.win7-progress-text {
+  position: absolute;
+  width: 100%;
+  text-align: center;
+  font-size: 11px;
+  font-weight: bold;
+  color: #1a1a1a;
+  z-index: 2;
+  line-height: 22px;
+  pointer-events: none;
+}
+
+/* ─── STATS ROW ─── */
+.stats-row {
+  background: #d4d0c8;
+  border-bottom: 2px solid #808080;
+  padding: 4px 14px;
+  display: flex;
+  gap: 12px;
+  font-size: 11px;
+  color: #222;
+}
+
+body.dark .stats-row {
+  background: #0c1a30;
+  border-bottom: 2px solid #F5A623;
+  color: #90b0d0;
+}
+
+.stat {
+  background: #fff;
+  border: 1px inset #999;
+  padding: 2px 8px;
+}
+
+body.dark .stat {
+  background: #071020;
+  border-color: #1a3a6b;
+  color: #a0c0e0;
+}
+
+/* ─── GALLERY ─── */
+.gallery-wrap {
+  flex: 1;
+  padding: 12px;
+  overflow-y: auto;
+}
+
+.galeri {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  gap: 8px;
+}
+
+.kart {
+  background: #fff;
+  border-top: 2px solid #fff;
+  border-left: 2px solid #fff;
+  border-bottom: 2px solid #808080;
+  border-right: 2px solid #808080;
+  cursor: pointer;
+}
+
+body.dark .kart {
+  background: #0c1f3e;
+  border-top: 2px solid #1a3a6b;
+  border-left: 2px solid #1a3a6b;
+  border-bottom: 2px solid #F5A623;
+  border-right: 2px solid #F5A623;
+}
+
+.kart:hover {
+  border-top: 2px solid #808080;
+  border-left: 2px solid #808080;
+  border-bottom: 2px solid #fff;
+  border-right: 2px solid #fff;
+}
+
+body.dark .kart:hover {
+  border-color: #ffc040;
+  opacity: 0.9;
+}
+
+.kart img {
+  width: 100%;
+  height: 110px;
+  object-fit: cover;
+  display: block;
+}
+
+.kart-no {
+  background: #245EDC;
+  color: #fff;
+  text-align: center;
+  padding: 3px 4px;
+  font-size: 11px;
+  font-weight: 600;
+  font-family: 'Segoe UI', Tahoma, sans-serif;
+  letter-spacing: 0.5px;
+  border-top: 1px solid #F5A623;
+}
+
+body.dark .kart-no {
+  background: #071020;
+  color: #F5A623;
+}
+
+/* ─── LIGHTBOX ─── */
+#lightbox {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.75);
+  z-index: 999;
+  justify-content: center;
+  align-items: center;
+}
+
+#lightbox.aktif { display: flex; }
+
+.lb-win {
+  background: #ECE9D8;
+  border-top: 2px solid #fff;
+  border-left: 2px solid #fff;
+  border-bottom: 2px solid #808080;
+  border-right: 2px solid #808080;
+  max-width: 90vw;
+}
+
+body.dark .lb-win {
+  background: #0c1f3e;
+  border-top: 2px solid #1a3a6b;
+  border-left: 2px solid #1a3a6b;
+  border-bottom: 2px solid #F5A623;
+  border-right: 2px solid #F5A623;
+}
+
+.lb-titlebar {
+  background: linear-gradient(180deg, #245EDC, #1240a0);
+  color: #fff;
+  padding: 3px 6px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+body.dark .lb-titlebar { background: linear-gradient(180deg, #0c1f3e, #071020); }
+
+.lb-close-btn {
+  background: #d4d0c8;
+  border-top: 2px solid #fff;
+  border-left: 2px solid #fff;
+  border-bottom: 2px solid #808080;
+  border-right: 2px solid #808080;
+  width: 18px;
+  height: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  cursor: pointer;
+  color: #000;
+  font-weight: bold;
+  line-height: 1;
+}
+
+.lb-body { padding: 10px; }
+.lb-body img { max-width: 80vw; max-height: 70vh; display: block; }
+.lb-no-bar {
+  margin-top: 6px;
+  background: #fff;
+  border: 1px inset #999;
+  padding: 3px 8px;
+  font-size: 11px;
+  color: #222;
+  font-family: 'Segoe UI', Tahoma, sans-serif;
+}
+
+body.dark .lb-no-bar {
+  background: #071020;
+  border-color: #F5A623;
+  color: #a0c0e0;
+}
+
+/* ─── TASKBAR ─── */
+.taskbar {
+  background: linear-gradient(180deg, #1f5fce 0%, #2465d4 8%, #1a4bb5 92%, #1640a0 100%);
+  height: 30px;
+  display: flex;
+  align-items: center;
+  padding: 0 6px;
+  gap: 4px;
+  border-top: 1px solid #3070e0;
+}
+
+body.dark .taskbar {
+  background: linear-gradient(180deg, #071020, #050d1a);
+  border-top: 2px solid #F5A623;
+}
+
+.taskbar-btn {
+  background: rgba(255,255,255,0.15);
+  border: 1px solid rgba(255,255,255,0.3);
+  padding: 2px 10px;
+  font-size: 11px;
+  color: #fff;
+  cursor: default;
+  font-family: 'Segoe UI', Tahoma, sans-serif;
+  white-space: nowrap;
+}
+
+.taskbar-clock {
+  margin-left: auto;
+  background: rgba(0,0,0,0.2);
+  border: 1px solid rgba(255,255,255,0.2);
+  padding: 2px 8px;
+  font-size: 11px;
+  color: #fff;
+  font-family: 'Segoe UI', Tahoma, sans-serif;
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-logo">
+    <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMDAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCAyMDAgNjAiPgogIDxyZWN0IHdpZHRoPSIyMDAiIGhlaWdodD0iNjAiIGZpbGw9IiMxYTNhNmIiLz4KICA8cmVjdCB4PSI0IiB5PSI0IiB3aWR0aD0iMTkyIiBoZWlnaHQ9IjUyIiBmaWxsPSJub25lIiBzdHJva2U9IiNmNWE2MjMiIHN0cm9rZS13aWR0aD0iMiIvPgogIDx0ZXh0IHg9IjE0IiB5PSIyMiIgZm9udC1mYW1pbHk9Ikdlb3JnaWEsIHNlcmlmIiBmb250LXNpemU9IjEzIiBmb250LXdlaWdodD0iYm9sZCIgZmlsbD0iI2Y1YTYyMyIgbGV0dGVyLXNwYWNpbmc9IjEiPkVZw5xCT8SeTFU8L3RleHQ+CiAgPHRleHQgeD0iMTQiIHk9IjM4IiBmb250LWZhbWlseT0iR2VvcmdpYSwgc2VyaWYiIGZvbnQtc2l6ZT0iOSIgZmlsbD0iI2ZmZmZmZiIgbGV0dGVyLXNwYWNpbmc9IjIiPktPTEVKxLA8L3RleHQ+CiAgPGxpbmUgeDE9IjE0IiB5MT0iNDIiIHgyPSIxODYiIHkyPSI0MiIgc3Ryb2tlPSIjZjVhNjIzIiBzdHJva2Utd2lkdGg9IjEiLz4KICA8dGV4dCB4PSIxNCIgeT0iNTMiIGZvbnQtZmFtaWx5PSJHZW9yZ2lhLCBzZXJpZiIgZm9udC1zaXplPSI3IiBmaWxsPSIjYWFjNGYwIiBsZXR0ZXItc3BhY2luZz0iMSI+w5bEnlJFTkPEsCBTxLBTVEVNxLA8L3RleHQ+Cjwvc3ZnPgo=" alt="Logo">
+  </div>
+  <div class="header-title">
+    <h1>Eyüboğlu Koleji — Öğrenci Fotoğraf Arşivi</h1>
+    <p>Öğrenci Bilgi Sistemi</p>
+  </div>
+  <div class="header-right">
+    <span class="toggle-label">Koyu Mod</span>
+    <div class="toggle-btn" id="toggleBtn" onclick="toggleDark()">
+      <div class="toggle-knob"></div>
+    </div>
+  </div>
+</div>
+
+<div class="progressbar-wrap">
+  <div class="progressbar-label">
+    <span id="durumText">Bağlanıyor...</span>
+    <span id="yuzdeText">%0</span>
+  </div>
+  <div class="win7-progress-outer">
+    <div class="win7-progress-inner" id="progressBar"></div>
+    <div class="win7-progress-text" id="progressLabel">0 / 2000</div>
+  </div>
+</div>
+
+<div class="stats-row">
+  <div class="stat" id="sBulunan">Bulunan: 0</div>
+  <div class="stat" id="sTarama">Taranan: 0 / 2000</div>
+  <div class="stat" id="sEksik">Eksik: 0</div>
+</div>
+
+<div class="gallery-wrap">
+  <div class="galeri" id="galeri"></div>
+</div>
+
+<div class="taskbar">
+  <div class="taskbar-btn">🏫 Eyüboğlu Koleji</div>
+  <div class="taskbar-btn" id="taskStatus">Hazırlanıyor...</div>
+  <div class="taskbar-clock" id="saat">--:--</div>
+</div>
+
+<div id="lightbox">
+  <div class="lb-win">
+    <div class="lb-titlebar">
+      <span id="lbTitle">Öğrenci Fotoğrafı</span>
+      <div class="lb-close-btn" onclick="kapat()">X</div>
+    </div>
+    <div class="lb-body">
+      <img id="lbImg" src="" alt="">
+      <div class="lb-no-bar" id="lbNo">No: —</div>
+    </div>
+  </div>
+</div>
+
+<script>
+const BASE = "https://my.eyuboglu.com/MYEYB/OGRENCI/KOLEJ/";
+const TOPLAM = 2000;
+const BATCH = 60;
+let tamam = 0, bulunan = 0;
+
+function toggleDark() {
+  document.body.classList.toggle('dark');
+}
+
+function saatGuncelle() {
+  const n = new Date();
+  document.getElementById('saat').textContent =
+    String(n.getHours()).padStart(2,'0') + ':' + String(n.getMinutes()).padStart(2,'0');
+}
+saatGuncelle();
+setInterval(saatGuncelle, 5000);
+
+function guncelle() {
+  tamam++;
+  const yuzde = Math.round(tamam / TOPLAM * 100);
+  document.getElementById('progressBar').style.width = yuzde + '%';
+  document.getElementById('yuzdeText').textContent = '%' + yuzde;
+  document.getElementById('progressLabel').textContent = tamam + ' / ' + TOPLAM;
+  document.getElementById('sBulunan').textContent = 'Bulunan: ' + bulunan;
+  document.getElementById('sTarama').textContent = 'Taranan: ' + tamam + ' / ' + TOPLAM;
+  document.getElementById('sEksik').textContent = 'Eksik: ' + (tamam - bulunan);
+  if (tamam < TOPLAM) {
+    document.getElementById('durumText').textContent = 'Taranıyor... ' + tamam + ' / ' + TOPLAM;
+    document.getElementById('taskStatus').textContent = 'Yükleniyor (%' + yuzde + ')';
+  } else {
+    document.getElementById('durumText').textContent = 'Tamamlandı — ' + bulunan + ' fotoğraf bulundu';
+    document.getElementById('taskStatus').textContent = 'Hazır — ' + bulunan + ' kayıt';
+  }
+}
+
+function ac(src, no) {
+  document.getElementById('lbImg').src = src;
+  document.getElementById('lbNo').textContent = 'Öğrenci No: ' + no + '   |   ' + src;
+  document.getElementById('lbTitle').textContent = 'Öğrenci No: ' + no;
+  document.getElementById('lightbox').classList.add('aktif');
+}
+
+function kapat() {
+  document.getElementById('lightbox').classList.remove('aktif');
+}
+
+document.getElementById('lightbox').addEventListener('click', function(e) {
+  if (e.target === this) kapat();
+});
+
+async function yukle(i) {
+  return new Promise(resolve => {
+    const src = BASE + i + '.bmp';
+    const img = new Image();
+    img.onload = () => {
+      bulunan++;
+      const kart = document.createElement('div');
+      kart.className = 'kart';
+      kart.innerHTML = '<img src="' + src + '" alt="' + i + '"><div class="kart-no">No: ' + i + '</div>';
+      kart.onclick = () => ac(src, i);
+      document.getElementById('galeri').appendChild(kart);
+      guncelle(); resolve();
+    };
+    img.onerror = () => { guncelle(); resolve(); };
+    img.src = src;
+  });
+}
+
+async function baslat() {
+  for (let s = 1; s <= TOPLAM; s += BATCH) {
+    const batch = [];
+    for (let i = s; i < Math.min(s + BATCH, TOPLAM + 1); i++) batch.push(yukle(i));
+    await Promise.all(batch);
+  }
+}
+
+baslat();
+</script>
+</body>
+</html>
